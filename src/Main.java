@@ -11,30 +11,96 @@ public class Main {
     public static  int money = 550;
     public static String action = "";
 
+    public static String choosenCoffee = "";
+
+    public static int[] espresso = {250, 16}; // water, coffee
+    public static int[] latte = {350, 75,20}; // water, milk, coffee
+    public static int[] cappuccino = {200, 100, 12}; // water, milk, coffee
+
+    public static boolean check(){
+
+        boolean result = false;
+
+        switch(choosenCoffee){
+            case "1":
+                if(water < espresso[0]){
+                    System.out.println("Sorry, not enough water!");
+                } else if( coffee < espresso[1]){
+                    System.out.println("Sorry, not enough coffee beans!");
+                    return false;
+                } else if(cups < 1) {
+                    System.out.println("Sorry, not enough cups!");
+                } else{
+                    result = true;
+                }
+                break;
+            case "2":
+                if(water < latte[0]){
+                    System.out.println("Sorry, not enough water!");
+                } else if(milk < latte[1]){
+                    System.out.println("Sorry, not enough milk!");
+                } else if(coffee < latte[2]){
+                    System.out.println("Sorry, not enough coffee beans!");
+                } else if(cups < 1){
+                    System.out.println("Sorry, not enough cups!");
+                } else {
+                    result = true;
+                }
+                break;
+            case "3":
+                if(water < cappuccino[0]){
+                    System.out.println("Sorry, not enough water!");
+                } else if(milk < cappuccino[1]){
+                    System.out.println("Sorry, not enough milk!");
+                } else if(coffee < cappuccino[2]){
+                    System.out.println("Sorry, not enough coffee beans!");
+                } else if(cups < 1){
+                    System.out.println("Sorry, not enough cups!");
+                } else {
+                    result = true;
+                }
+                break;
+            default:
+                break;
+        }
+
+        return result;
+    }
+
     public static void buy(){
-        System.out.println("What do you want to buy? 1 - espresso, 2 - latte, 3 - cappucino:");
-        int num = scanner.nextInt();
-        switch (num){
-            case 1: // espresso
-                water -= 250;
-                coffee -= 16;
-                money +=4;
-                cups -=1;
+        System.out.println("What do you want to buy? 1 - espresso, 2 - latte, 3 - cappucino, back - to main manu:");
+        choosenCoffee = scanner.next();
+        switch (choosenCoffee){
+            case "1": // espresso
+                if(check()){
+                    water -= 250;
+                    coffee -= 16;
+                    money +=4;
+                    cups -=1;
+                    System.out.println("I have enough resources, making you a coffee!");
+                }
                 break;
-            case 2: // latte
-                water -= 350;
-                milk -= 75;
-                coffee -=20;
-                money+=7;
-                cups -=1;
+            case "2": // latte
+                if(check()) {
+                    water -= 350;
+                    milk -= 75;
+                    coffee -=20;
+                    money+=7;
+                    cups -=1;
+                    System.out.println("I have enough resources, making you a coffee!");
+                }
                 break;
-            case 3: // cappucino
-                water -=200;
-                milk -=100;
-                coffee -=12;
-                money +=6;
-                cups -=1;
+            case "3": // cappucino
+                if(check()){
+                    water -=200;
+                    milk -=100;
+                    coffee -=12;
+                    money +=6;
+                    cups -=1;
+                    System.out.println("I have enough resources, making you a coffee!");
+                }
                 break;
+
             default:
                 break;
         }
@@ -72,27 +138,37 @@ public class Main {
     }
     public static void main(String[] args) {
 
-        write();
+        //write();
 
-        System.out.println("Write action (buy, fill, take):");
-        action = scanner.next();
+        boolean run = true;
 
-        switch(action){
-            case "buy":
-                buy();
-                break;
-            case "fill":
-                fill();
-                break;
-            case "take":
-                System.out.println("I gave you $" + money);
-                money = 0;
-                break;
-            default:
-                break;
+        while(run) {
+
+            System.out.println("Write action (buy, fill, take, remaining, exit):");
+            action = scanner.next();
+
+            switch (action) {
+                case "buy":
+                    buy();
+                    break;
+                case "fill":
+                    fill();
+                    break;
+                case "take":
+                    System.out.println("I gave you $" + money);
+                    money = 0;
+                    break;
+                case "remaining":
+                    write();
+                    break;
+                case "exit":
+                    run = false;
+                    break;
+                default:
+                    break;
+            }
+
+            //write();
         }
-
-        write();
-
     }
 }
